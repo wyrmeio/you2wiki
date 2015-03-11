@@ -1,0 +1,74 @@
+<head>
+
+    <title>you2wiki</title>
+</head>
+
+<body>
+{{#famousContext id="mainCtx"}}
+    {{#HeaderFooterLayout headerSize=45}}
+        {{#Surface target="header"}}
+            {{> header}}
+        {{/Surface}}
+        {{#ContainerSurface target="content" overflow="hidden"}}
+            {{#FlexScrollView layout="ListLayout" direction="X" layoutOptions=layoutOptions}}
+                {{#famousEach gridItem}}
+                    {{#Animate size='[190,undefined]' onEnter='in:super.slow' onLeave='out:super.slow'}}
+                        {{#ContainerSurface target="content" overflow="hidden"}}
+
+                            {{#Scrollview}}
+                                {{#each this}}
+                                    {{#Surface style=style size="[undefined,50]" class="noselect"}}
+                                        {{> listItems}}
+                                    {{/Surface}}
+                                {{/each}}
+                            {{/Scrollview}}
+                        {{/ContainerSurface}}
+                    {{/Animate}}
+                {{/famousEach}}
+            {{/FlexScrollView}}
+        {{/ContainerSurface}}
+    {{/HeaderFooterLayout}}
+{{/famousContext}}
+
+{{#famousContext id="modal"}}
+    {{> modal_popup}}
+{{/famousContext}}
+</body>
+
+<template name="header">
+    <div id="header">
+        <a id="brand" href="/">you2wiki</a>
+        <a>Levels: {{level}}</a>
+    </div>
+</template>
+
+<template name="listItems">
+    <div class="item {{class}}">{{name}}</div>
+</template>
+
+<template name="popup">
+    <div class="modal fade">
+        <div class="modal-dialog {{modal_class}}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Default Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>test template. render you tube videos</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!-- <button id="save" type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</template>
+
+
