@@ -14,11 +14,9 @@ gadicohen:famous-views
 gadicohen:fview-flex
 
 mquandalle:jade
-meteorhacks:kadira
-meteorhacks:zones
-meteorhacks:kadira-profiler
 reactive-var
 reactive-dict
 mjn:fview-animate
 oorabona:famous-views-popup
 mrt:bootstrap-3
+wenape:fview-infinitescroll
