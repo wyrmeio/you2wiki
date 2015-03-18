@@ -85,7 +85,7 @@
 	        Category.insert({"_id":"74","name":"War","parent":null,"level" : 1,"class" : " ","order" : 0,"style" : ""});
 	        Category.insert({"_id":"75","name":"Love","parent":null,"level" : 1,"class" : " ","order" : 0,"style" : ""});
 
-	        /*   for (var i = 1; i <= 30; i++) {
+	           for (var i = 1; i <= 300; i++) {
 			Category.insert({
 				name: "C-" + i,
 				parent: null,
@@ -94,7 +94,7 @@
 				order: 0,
 				style: ""
 			});
-		}*/
+		}
         }
 
     });
@@ -133,7 +133,22 @@
                     return Category.find({parent: id, level: level}, {limit: 30, skip: count}).fetch();
 
                 }
-            }
+            },
+
+	        getVideos: function(selected){
+
+		       // console.log(selected.toString());
+		        var result = HTTP.get("https://www.googleapis.com/youtube/v3/search",{query: "part=snippet&q="+selected.join([separator = ' '])+"&maxResults=50&key=AIzaSyC03h-Mb85Lg2XuC3AldOaIygB4balUcNg"} );
+
+		        if(result.statusCode==200) {
+			        return result.data.items;
+		        } else {
+			        console.log("Response issue: ", result.statusCode);
+			        var errorJson = JSON.parse(result.content);
+			        throw new Meteor.Error(result.statusCode, errorJson.error);
+		        }
+
+	        }
         });
 
         Meteor.publish('category-data',function(id,level){
@@ -152,7 +167,6 @@
             }*/
             return Category.find({parent: id, level: level},{limit:30});
         });
-
 
 
 
