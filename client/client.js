@@ -1,6 +1,8 @@
-selected=[];
+selected = [];
+
 
 if ( Meteor.isClient ) {
+	//jQuery.noConflict();
 
 	var SpringTransition = famous.transitions.SpringTransition;
 	var SnapTransition = famous.transitions.SnapTransition;
@@ -32,12 +34,11 @@ if ( Meteor.isClient ) {
 	FView.registerTransition('out:super.slow', MySuperTransitionOut(5000, 'easeOut'));
 
 	var queue = new ReactiveVar();
-
 	var q = [];
 
 	var layoutOptions = {
 		ListLayout: ['itemSize', 'margins', 'spacing'],
-		CollectionLayout: [ 'itemSize', 'justify', 'margins', 'spacing']
+		CollectionLayout: ['itemSize', 'justify', 'margins', 'spacing']
 	};
 
 	Session.setDefault('margins', [3, 3, 3, 3]);
@@ -66,16 +67,16 @@ if ( Meteor.isClient ) {
 		count[1] = 30;
 
 		/*if ( Category.find({level:1,name:"Load more",parent:null}).count() === 0 ) {
-			Category._collection.insert({
-				//_id: 1,
-				level: 1,
-				name: "Load more",
-				parent: null,
-				order: count[1],
-				style: "background:#fff"
-			});
-		}
-*/
+		 Category._collection.insert({
+		 //_id: 1,
+		 level: 1,
+		 name: "Load more",
+		 parent: null,
+		 order: count[1],
+		 style: "background:#fff"
+		 });
+		 }
+		 */
 		q[0] = Category.find({level: 1}, {sort: {order: 0}});
 
 		queue.set(q);
@@ -86,11 +87,11 @@ if ( Meteor.isClient ) {
 
 	};
 
-	getScrollingData=function(){
-		Meteor.call('categoryData', null,1, count[1], function (error, result) {
+	getScrollingData = function () {
+		Meteor.call('categoryData', null, 1, count[1], function (error, result) {
 
 
-			if(result.length!=0) {
+			if ( result.length != 0 ) {
 				console.log(count[1]);
 				console.log(result);
 
@@ -117,7 +118,7 @@ if ( Meteor.isClient ) {
 				queue.set(q);
 				Session.set('isLoading', false);
 			}
-			else{
+			else {
 				Session.set('isLoading', true);
 			}
 		});
@@ -130,11 +131,11 @@ if ( Meteor.isClient ) {
 			selected.push(self.name);
 			Router.go('/videos');
 			/*Popups.show({
-				template: "popup",
-				modal_class: "modal-lg"
-			});*/
+			 template: "popup",
+			 modal_class: "modal-lg"
+			 });*/
 		},
-		'contextmenu div.item': function(e){
+		'contextmenu div.item': function (e) {
 			e.preventDefault();
 
 			selected.push(self.name);
@@ -148,7 +149,7 @@ if ( Meteor.isClient ) {
 				var self = this;
 				Meteor.call('categoryData', this.parent, this.level, count[this.level], function (error, result) {
 
-					Category._collection.remove({level: self.level,name:"Load more",parent:self.parent});
+					Category._collection.remove({level: self.level, name: "Load more", parent: self.parent});
 
 					var _ref = result;
 					var i = count[self.level] + 1;
@@ -166,19 +167,19 @@ if ( Meteor.isClient ) {
 					}
 
 					/*Category._collection.insert({
-						//_id: self.level,
-						level: self.level,
-						name: "Load more",
-						parent: self.parent,
-						order: count[self.level]+1,
-						style: "background:#fff"
-					});*/
+					 //_id: self.level,
+					 level: self.level,
+					 name: "Load more",
+					 parent: self.parent,
+					 order: count[self.level]+1,
+					 style: "background:#fff"
+					 });*/
 
 					count[self.level] = count[self.level] + 30;
 
 					// Category._collection.update({_id: level}, {$set: {order: count[level]}});
 
-					q[(self.level - 1)] = Category.find({level: self.level,parent:self.parent}, {sort: {order: 0}});
+					q[(self.level - 1)] = Category.find({level: self.level, parent: self.parent}, {sort: {order: 0}});
 					queue.set(q);
 
 				});
@@ -219,18 +220,18 @@ if ( Meteor.isClient ) {
 						}
 
 
-					/*	if ( Category.find({name:"Load more",level: (level+1),parent:self._id}).count() === 0 ) {
-							Category._collection.insert({
+						/*	if ( Category.find({name:"Load more",level: (level+1),parent:self._id}).count() === 0 ) {
+						 Category._collection.insert({
 
-								level:(level+1),
-								name: "Load more",
-								parent: self._id,
-								order: 31,
-								style: "background:#fff"
-							});
+						 level:(level+1),
+						 name: "Load more",
+						 parent: self._id,
+						 order: 31,
+						 style: "background:#fff"
+						 });
 
-							count[(level+1)]=30;
-						}*/
+						 count[(level+1)]=30;
+						 }*/
 
 						q.push(Category.find({parent: self._id, level: (level + 1)}, {sort: {order: 0}}));
 						queue.set(q);
@@ -266,55 +267,182 @@ if ( Meteor.isClient ) {
 
 	Session.setDefault('order', 1);
 
-	Template.home.events({
-		/* 'click .surfaceAction': function (event) {
-		 *//*  var add = event.currentTarget.getAttribute('data-action') === 'add';
-		 var sids = _.pluck(Surfaces.find({show: !add}, {fields: {_id: 1}}).fetch(), '_id');
-		 var id = sids[Math.floor((Math.random() - 0.001) * sids.length)];
-		 Surfaces.update(id, {$set: {show: add}});*//*
-		 }*/
-	});
-
 	Template.header.helpers({
 		level: function () {
 			return Session.get('level');
 		}
 	});
 
+	Template.header.events({
+		'click #google': function (e) {
+			e.preventDefault();
+			//console.log("I am working");
+			Meteor.loginWithFacebook({
+				requestPermissions: ['email'],
+				loginStyle: "redirect"
+			}, function () {
+				/*Router.go('mod');*/
+			});
+		},
+		'click #logout': function (e) {
+			e.preventDefault();
+			Meteor.logout();
+		},
+		'click #create': function (e) {
+			e.preventDefault();
+			Router.go('mod');
+		}
+	});
+
 	Template.videos.helpers({
-		videoList: function(){
+		videoList: function () {
 			return video.get();
 		},
 
 		layoutOptions: function () {
-		return  {itemSize:[300,230],justify:[0,0],margins:[10,10,10,10],spacing:[10,10]};
-	}
+			return {itemSize: [300, 230], justify: [0, 0], margins: [10, 10, 10, 10], spacing: [10, 10]};
+		}
 	});
 
 	Template.play.helpers({
-		id: function(){
+		id: function () {
 			return Session.get('videoId');
 		}
 	});
 
 	Template.playList.events({
-		'click a':function(){
-			var self=this;
+		'click a': function () {
+			var self = this;
 
-			Session.set('videoId',self.id.videoId);
+			Session.set('videoId', self.id.videoId);
 			Router.go('play');
 		}
 	});
 
 	Logger.setLevel("famous-views", "info");
 
-	/*var hammer = $('div.item').hammer();
-	hammer.on('doubletap', function(e) {
+	Template.mod.helpers({
+		gridItem: function () {
 
-		//e.stopPropagation();
-		alert('This did just happen.');
-
+			return queue.get();
+		},
+		layoutOptions: function () {
+			var out = {};
+			_.each(layoutOptions['ListLayout'], function (option) {
+				out[option] = Session.get(option);
+			});
+			return out;
+		}
 	});
-*/
+
+	Template.editItems.events({
+		'click div': function (e, t) {
+
+			if ( this.name === "Load more" ) {
+				//Load More Data
+				var self = this;
+				Meteor.call('categoryData', this.parent, this.level, count[this.level], function (error, result) {
+
+					Category._collection.remove({level: self.level, name: "Load more", parent: self.parent});
+
+					var _ref = result;
+					var i = count[self.level] + 1;
+					for ( var j = 0; j < _ref.length; i++, j++ ) {
+						Category._collection.insert({
+							_id: _ref[j]._id,
+							name: _ref[j].name,
+							level: _ref[j].level,
+							class: _ref[j].class,
+							order: i,
+							style: "background: hsl(" + (i * 360 / 60) + ", 100%, 50%)",
+							parent: _ref[j].parent
+						});
+
+					}
+
+					/*Category._collection.insert({
+					 //_id: self.level,
+					 level: self.level,
+					 name: "Load more",
+					 parent: self.parent,
+					 order: count[self.level]+1,
+					 style: "background:#fff"
+					 });*/
+
+					count[self.level] = count[self.level] + 30;
+
+					// Category._collection.update({_id: level}, {$set: {order: count[level]}});
+
+					q[(self.level - 1)] = Category.find({level: self.level, parent: self.parent}, {sort: {order: 0}});
+					queue.set(q);
+
+				});
+
+			}
+
+			else {
+
+				//Get other categories
+				var level = this.level;
+				var self = this;
+
+				Category._collection.update({parent: self.parent, level: level}, {$set: {class: " "}}, {multi: true});
+				Category._collection.update({_id: self._id}, {$set: {class: "selected"}});
+
+				if ( Session.get('level') != level ) {
+					for ( var i = Session.get('level'); i > level; i-- ) {
+						q.pop();
+						selected.pop();
+					}
+				}
+				queue.set(q);
+				selected.push(self.name);
+
+				if ( Category.find({level: (level + 1), parent: self._id}).count() === 0 ) {
+					Meteor.subscribe('category-data', self._id, (level + 1), function () {
+
+						var _ref = Category.find({level: (level + 1), parent: self._id}).fetch();
+
+						for ( var j = 0; j < _ref.length; j++ ) {
+							Category._collection.update({_id: _ref[j]._id}, {
+								$set: {
+									order: j,
+									style: "background: hsl(" + (j * 360 / 60) + ", 100%, 50%)"
+								}
+							});
+
+						}
+
+
+						/*	if ( Category.find({name:"Load more",level: (level+1),parent:self._id}).count() === 0 ) {
+						 Category._collection.insert({
+
+						 level:(level+1),
+						 name: "Load more",
+						 parent: self._id,
+						 order: 31,
+						 style: "background:#fff"
+						 });
+
+						 count[(level+1)]=30;
+						 }*/
+
+						q.push(Category.find({parent: self._id, level: (level + 1)}, {sort: {order: 0}}));
+						queue.set(q);
+					});
+				}
+				else {
+
+					q.push(Category.find({parent: self._id, level: (level + 1)}, {sort: {order: 0}}));
+					queue.set(q);
+
+				}
+
+
+				Session.set('level', (level + 1));
+			}
+		}
+	});
+
 }
 

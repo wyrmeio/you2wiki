@@ -18,9 +18,14 @@ reactive-var
 reactive-dict
 mjn:fview-animate
 oorabona:famous-views-popup
-mrt:bootstrap-3
 wenape:fview-infinitescroll
 iron:router
 http
 wenape:fview-infinitescrollview
 hammer:hammer
+accounts-google
+service-configuration
+twbs:bootstrap
+accounts-facebook
+fortawesome:fontawesome
+babrahams:editable-text

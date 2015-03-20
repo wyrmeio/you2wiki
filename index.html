@@ -31,8 +31,8 @@
                 {{#Animate size='[190,undefined]' onEnter='in:super.slow' onLeave='out:super.slow'}}
                     {{#ContainerSurface target="content" overflow="hidden"}}
 
-                        {{!--#Scrollview--}}
-                        {{#InfiniteScrollview offset=250 callback='getScrollingData'}}
+                    {{!--#Scrollview--}}
+                        {{#InfiniteScrollview offset=500 callback='getScrollingData'}}
 
                             {{#each this}}
                                 {{#Surface style=style size="[undefined,50]" class="noselect"}}
@@ -53,8 +53,17 @@
 <template name="header">
     <div id="header">
         <a id="brand" href="/">you2wiki</a>
-        <a href="/videos">Videos</a>
+        <!--<a href="/videos">Videos</a>-->
         <a>Levels: {{level}}</a>
+
+
+        {{#if currentUser}}
+            <a href="#" id="logout" class="btn btn-success pull-right login"> {{currentUser.profile.name}} </a>
+            <a href="#" id="create" class="btn btn-primary pull-right login"> My View </a>
+        {{else}}
+            <a href="#" id="google" class="btn btn-primary pull-right login">Sign In with Facebook</a>
+        {{/if}}
+
     </div>
 </template>
 
@@ -78,22 +87,60 @@
 
 <template name="playList" class="playList">
     <a>
-        <img class="thumbnails" src="{{this.snippet.thumbnails.medium.url}}" >
+        <img class="thumbnails" src="{{this.snippet.thumbnails.medium.url}}">
+
         <div class="title">{{this.snippet.title}}</div>
     </a>
 </template>
 
 <template name="play">
-{{#ContainerSurface target="content" overflow="hidden"}}
-    {{#Surface}}
-        <iframe width="330px" height="300px" src="//www.youtube.com/embed/{{id}}?rel=0&autoplay=1"  frameborder="0" allowfullscreen="true"></iframe>
-    {{/Surface}}
+    {{#ContainerSurface target="content" overflow="hidden"}}
+        {{#Surface}}
+            <iframe width="330px" height="300px" src="//www.youtube.com/embed/{{id}}?rel=0&autoplay=1" frameborder="0"
+                    allowfullscreen="true"></iframe>
+        {{/Surface}}
     {{/ContainerSurface}}
 </template>
 
-<template name="test">
-    <h1 style="color:#222222;font-size: 20px">testing</h1>
+<template name="mod">
+    {{#ContainerSurface target="content" overflow="hidden"}}
+        {{#FlexScrollView id="modFS" layout="ListLayout" direction="X" layoutOptions=layoutOptions}}
+            {{#famousEach gridItem}}
+                {{#Animate size='[190,undefined]' onEnter='in:super.slow' onLeave='out:super.slow'}}
+                    {{#ContainerSurface target="content" overflow="hidden"}}
+
+                        {{#InfiniteScrollview offset=500 callback='getScrollingData'}}
+                            {{#each this}}
+                                {{#Surface style=style size="[undefined,50]" class="noselect"}}
+                                    {{> editItems}}
+                                {{/Surface}}
+                            {{/each}}
+                        {{/InfiniteScrollview}}
+
+                    {{/ContainerSurface}}
+                {{/Animate}}
+            {{/famousEach}}
+        {{/FlexScrollView}}
+    {{/ContainerSurface}}
+
 </template>
+
+<template name="editItems">
+<div class="editItems">
+    {{> editableText collection='category' field="name" class="edit" inputClass="form-control textbox_style" placeholder="Add Category"  eventType="dblclick" autoInsert=true afterUpdate="updateCategory"}}
+</div>   <!--<div class="edit {{class}}">{{name}} </div>-->
+
+</template>
+
+<!--<template name="editable">
+    <form class="form-inline">
+        <div class="form-group">
+            <input type="text" class="form-control" id="data" placeholder="Add Category">
+        </div>
+
+        <button type="submit" id="save" class="btn btn-default">Save</button>
+    </form>
+</template>-->
 
 
 

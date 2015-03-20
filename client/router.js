@@ -18,7 +18,6 @@ Router.onBeforeAction(function () {
 	this.next();
 }, {
 	only: ['videos']
-
 });
 
 Router.route('/videos', function () {
@@ -29,6 +28,14 @@ Router.route('/videos', function () {
 Router.route('play',function(){
 	this.render('play');
 });
+
+Router.route('/mod',function(){
+	this.render('mod');
+});
+
+
+
+
 
 
 

@@ -51,6 +51,38 @@ body {
     border-left:3px solid #ffffff;
 }
 
+.edit{
+    font-family: 'Roboto', sans-serif !important;
+    box-sizing: border-box;
+    /* border-bottom: 1px solid #222222;*/
+    /* background-color:rgba(77, 89, 102, 1);*/
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+    color:#000;
+    padding-left: 10px;
+    /* margin-bottom: 5px;*/
+    line-height: 50px;
+    /*border-left:3px solid #ffffff;*/
+}
+
+.textbox_style{
+    font-family: 'Roboto', sans-serif !important;
+    border: 1px solid #3366FF;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-left: 9px;
+    width:90%;
+    color:#000;
+    font-size: 18px;
+    padding-left: 5px;
+}
+
+.editItems{
+    cursor:pointer;
+
+}
+
 .item:visited,.item:hover,.item:active,.selected{
     color: #ffffff;
     background-color: #222;
@@ -86,5 +118,11 @@ body {
 
 .playList{
     background-color: #cecece;
+}
+
+.login{
+    color:#fff !important;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
